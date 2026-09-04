@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productivity Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-layout">
+        
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="ri-dashboard-3-fill"></i>
+                <h2>ProDash</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-target="view-dashboard">
+                    <i class="ri-home-smile-line"></i> Home
+                </button>
+                <button class="nav-item" data-target="view-todo">
+                    <i class="ri-list-check-2"></i> Todo List
+                </button>
+                <button class="nav-item" data-target="view-planner">
+                    <i class="ri-calendar-todo-line"></i> Daily Planner
+                </button>
+                <button class="nav-item" data-target="view-goals">
+                    <i class="ri-focus-2-line"></i> Daily Goals
+                </button>
+                <button class="nav-item" data-target="view-pomodoro">
+                    <i class="ri-timer-line"></i> Pomodoro
+                </button>
+                <button class="nav-item" data-target="view-weather">
+                    <i class="ri-sun-cloudy-line"></i> Weather
+                </button>
+                <button class="nav-item" data-target="view-motivation">
+                    <i class="ri-double-quotes-l"></i> Motivation
+                </button>
+            </nav>
+        </aside>
+
+        <main class="main-workspace">
+            
+            <header class="topbar">
+                <h1 class="page-title" id="greeting">Good Morning</h1>
+                <div class="topbar-actions">
+                    <div class="date-time-widget">
+                        <span id='tb-date' class="widget-item"></span>
+                        <span id='tb-time' class="widget-item"></span>
+                    </div>
+                    <button class="theme-toggle-btn" aria-label="Toggle Theme">
+                        <i class="ri-moon-line"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="viewport">
+                
+                <section id="view-dashboard" class="view-section is-fullscreen">
+                    <div class="bento-grid">
+                        
+                        <div class="bento-card card-todo" data-target="view-todo">
+                            <div class="card-header">
+                                <div class="icon-box"><i class="ri-list-check-2"></i></div>
+                                <i class="ri-arrow-right-up-line go-icon"></i>
+                            </div>
+                            <h3>Todo List</h3>
+                            <ul class="no-pointer" id="dash-todo-list"></ul>
+                            <div class="progress-container">
+                                <p class="text-muted mt-2"><span id="rem-task-count">5</span> tasks remaining</p>
+                            </div>
+                        </div>
+
+                        <div class="bento-card card-planner" data-target="view-planner">
+                            <div class="card-header">
+                                <div class="icon-box"><i class="ri-calendar-todo-line"></i></div>
+                                <i class="ri-arrow-right-up-line go-icon"></i>
+                            </div>
+                            <h3>Daily Planner</h3>
+                            
+                            <!-- Google Calendar Style Day View (Miniature) -->
+                            <ul class="mini-calendar-agenda" id="dash-planner-agenda">
+                            </ul>
+                        </div>
+
+                        <div class="bento-card card-goals" data-target="view-goals">
+                            <div class="card-header">
+                                <div class="icon-box"><i class="ri-focus-2-line"></i></div>
+                                <i class="ri-arrow-right-up-line go-icon"></i>
+                            </div>
+                            <h3>Daily Goals</h3>
+                            <ul class="no-pointer" id="dash-goal-list"></ul>
+                            <div class="progress-container">
+                                <div class="progress-bar"><div class="progress-fill" style="width: 40%"></div></div>
+                                <span id="dash-progress-text" class="text-muted text-sm mt-1">2 of 5 Complete</span>
+                            </div>
+                        </div>
+
+                        <div class="bento-card card-pomodoro flex-center" data-target="view-pomodoro">
+                            <i class="ri-timer-fill text-xl" id="pomodoro-icon"></i>
+                            <i class="ri-arrow-right-up-line go-icon top-right"></i>
+                              
+                            <!-- Mini Adjuster & Display -->
+                            <div class="mini-timer-adjuster">
+                                <button class="mini-adjust-btn" id="mini-decrease-time" aria-label="Decrease time">
+                                    <i class="ri-subtract-line"></i>
+                                </button>
+
+                                <div class="mini-timer-display">
+                                    <h2 class="mini-timer-text" id="mini-timer-text">25:00</h2>
+                                    <p class="mini-session-label" id="mini-session-label">Work Session</p>
+                                </div>
+
+                                <button class="mini-adjust-btn" id="mini-increase-time" aria-label="Increase time">
+                                    <i class="ri-add-line"></i>
+                                </button>
+                            </div>
+
+                            <!-- Mini Controls (Icon-only) -->
+                            <div class="mini-timer-controls">
+                                <button class="mini-control-btn btn-primary" id="mini-timer-start" aria-label="Start">
+                                    <i class="ri-play-fill"></i>
+                                </button>
+                                <button class="mini-control-btn btn-secondary" id="mini-timer-pause" aria-label="Pause">
+                                    <i class="ri-pause-fill"></i>
+                                </button>
+                                <button class="mini-control-btn btn-outline" id="mini-timer-reset" aria-label="Reset">
+                                    <i class="ri-refresh-line"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bento-card card-weather flex-center" data-target="view-weather">
+                            <i class="ri-arrow-right-up-line go-icon top-right"></i>
+                            <i class="ri-sun-cloudy-fill text-xl" id="weather-icon"></i>
+                            <h3 id="weather-temp">24°C</h3>
+                            <p id="weather-state" class="text-muted">Partly Cloudy</p>
+                            <p id="weather-location" style="margin-top: 10px;">Unknown, Unknown</p>
+                        </div>
+
+                        <div class="bento-card card-motivation" data-target="view-motivation">
+                            <div class="card-header" style="margin-bottom: 12px;">
+                                <i class="ri-double-quotes-l text-xl quote-icon" style="margin-bottom: 0;"></i>
+                                <button class="btn-icon refresh-quote-btn" aria-label="Refresh Quote">
+                                    <i class="ri-refresh-line"></i>
+                                </button>
+                            </div>
+                            <h3 id="quote">"Small steps every day."</h3>
+                            <p id="quote-author" class="text-muted mt-2">- Productivity Mantra</p>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Todo List View -->
+                <section id="view-todo" class="view-section hidden">
+                    <div class="app-header">
+                        <button class="back-btn" id="back-to-dash"><i class="ri-arrow-left-line"></i> Dashboard</button>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-title">
+                            <div class="icon-box"><i class="ri-list-check-2"></i></div>
+                            <h2>Todo List</h2>
+                        </div>
+                        <p class="app-desc">Manage your daily tasks and keep track of pending work.</p>
+                        
+                        <form id="add-task-form" class="input-group">
+                            <input type="text" class="task-input" placeholder="What needs to be done?" required>
+                            <button type="submit" id="task-add-btn" class="btn btn-primary"><i class="ri-add-line"></i> Add</button>
+                        </form>
+
+                        <ul class="task-list"> 
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Pomodoro View -->
+                <section id="view-pomodoro" class="view-section hidden">
+                    <div class="app-header">
+                        <button class="back-btn" id="back-to-dash">
+                            <i class="ri-arrow-left-line"></i> Dashboard
+                        </button>
+                    </div>
+
+                    <div class="app-content text-center">
+                        <div class="app-title justify-center">
+                            <div class="icon-box"><i class="ri-timer-line"></i></div>
+                            <h2>Pomodoro Timer</h2>
+                        </div>
+                        <p class="app-desc text-center">Use the Pomodoro technique to maintain focus and manage work intervals.</p>
+                        
+                        <!-- Timer Display with Side Adjuster Buttons -->
+                        <div class="timer-adjuster-wrapper">
+                            <button class="timer-adjust-btn" id="decrease-time" aria-label="Decrease time">
+                                <i class="ri-subtract-line"></i>
+                            </button>
+
+                            <div class="timer-display">
+                                <h1 class="timer-text" id="timer-text">25:00</h1>
+                                <p class="session-label" id="session-label">Work Session</p>
+                            </div>
+
+                            <button class="timer-adjust-btn" id="increase-time" aria-label="Increase time">
+                                <i class="ri-add-line"></i>
+                            </button>
+                        </div>
+
+                        <div class="timer-controls">
+                            <button class="btn btn-primary btn-lg" id="timer-start"><i class="ri-play-fill"></i> Start</button>
+                            <button class="btn btn-secondary btn-lg" id="timer-pause"><i class="ri-pause-fill"></i> Pause</button>
+                            <button class="btn btn-outline btn-lg" id="timer-reset"><i class="ri-refresh-line"></i> Reset</button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Planner View -->
+                <section id="view-planner" class="view-section hidden">
+                    <div class="app-header">
+                        <button class="back-btn" id="back-to-dash"><i class="ri-arrow-left-line"></i> Dashboard</button>
+                    </div>
+                    
+                    <div class="app-content planner-layout">
+                        
+                        <div class="app-title">
+                            <div class="icon-box"><i class="ri-calendar-todo-line"></i></div>
+                            <h2>Daily Planner</h2>
+                        </div>
+                        <p class="app-desc text-muted mb-4">Schedule your day by the hour and never miss an important meeting.</p>
+                                                
+                        <div class="event-form-container">
+                            <form class="event-form" id="add-event-form">
+                                
+                                <div class="form-group event-title-group">
+                                    <label for="event-title">Event Title</label>
+                                    <input type="text" id="event-title" class="task-input" placeholder="e.g., Design Sync" required>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="start-time">Start Time</label>
+                                        <select id="start-time" class="task-input form-select" required>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="end-time">End Time</label>
+                                        <select id="end-time" class="task-input form-select" required>
+                                        </select>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary add-event-btn">
+                                        <i class="ri-add-line"></i> Add
+                                    </button>
+                                </div>
+                            </form>
+                            <p class="planner-form-hint text-muted">Occupied times are greyed out and cannot be reused. Use the trash icon on a block to delete it.</p>
+                            <p id="planner-feedback" class="planner-feedback" role="status"></p>
+                        </div>
+
+                        <hr class="divider">
+
+                        <ul class="mini-calendar-agenda planner-full-agenda" id="planner-agenda">
+                        </ul>
+                        
+                    </div>
+                </section>
+
+                <!-- Weather View -->
+                <section id="view-weather" class="view-section hidden">
+                    <div class="app-header">
+                        <button class="back-btn" id="back-to-dash">
+                            <i class="ri-arrow-left-line"></i> Dashboard
+                        </button>
+                    </div>
+
+                    <div class="app-content text-center">
+                        <div class="app-title">
+                            <div class="icon-box"><i class="ri-sun-cloudy-line"></i></div>
+                            <h2>Weather Details</h2>
+                        </div>
+                        <p class="app-desc text-center">Current weather conditions and forecasts for your area.</p>
+                        
+                        <!-- Primary Display -->
+                        <div class="weather-large-display">
+                            <div class="weather-icon-wrapper">
+                                <i class="ri-heavy-showers-line weather-hero-icon" id="weather-icon"></i>
+                            </div>
+                            <h1 class="weather-temp" id="weather-temp">27.4°C</h1>
+                            <p class="weather-condition text-muted" id="weather-condition">Moderate or heavy rain shower</p>
+                            <p class="weather-location" id="weather-location">Raipur, Chhattisgarh, India</p>
+                            <span class="weather-badge" id="weather-feels-like">Feels like 30.9°C</span>
+                        </div>
+                        
+                        <!-- Metrics Grid -->
+                        <div class="weather-metrics-grid">
+                            <div class="weather-metric">
+                                <span class="metric-label text-muted text-sm">
+                                    <i class="ri-windy-line"></i> Wind
+                                </span>
+                                <p class="metric-value" id="metric-wind">11.5 kph WSW</p>
+                            </div>
+
+                            <div class="weather-metric">
+                                <span class="metric-label text-muted text-sm">
+                                    <i class="ri-drop-line"></i> Humidity
+                                </span>
+                                <p class="metric-value" id="metric-humidity">81%</p>
+                            </div>
+
+                            <div class="weather-metric">
+                                <span class="metric-label text-muted text-sm">
+                                    <i class="ri-eye-line"></i> Visibility
+                                </span>
+                                <p class="metric-value" id="metric-visibility">7.0 km</p>
+                            </div>
+
+                            <div class="weather-metric">
+                                <span class="metric-label text-muted text-sm">
+                                    <i class="ri-sun-line"></i> UV Index
+                                </span>
+                                <p class="metric-value" id="metric-uv">0.3</p>
+                            </div>
+
+                            <div class="weather-metric">
+                                <span class="metric-label text-muted text-sm">
+                                    <i class="ri-rainy-line"></i> Precipitation
+                                </span>
+                                <p class="metric-value" id="metric-precip">4.03 mm (81%)</p>
+                            </div>
+
+                            <div class="weather-metric">
+                                <span class="metric-label text-muted text-sm">
+                                    <i class="ri-dashboard-3-line"></i> Pressure
+                                </span>
+                                <p class="metric-value" id="metric-pressure">1002.0 mb</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Motivation View -->
+                <section id="view-motivation" class="view-section hidden">
+                    <div class="app-header">
+                        <button class="back-btn" id="back-to-dash"><i class="ri-arrow-left-line"></i> Dashboard</button>
+                    </div>
+                    <div class="app-content text-center">
+                        <div class="app-title justify-center">
+                            <div class="icon-box"><i class="ri-double-quotes-l"></i></div>
+                            <h2>Motivation & Focus</h2>
+                        </div>
+                        <p class="app-desc text-center">Take a moment to reflect and find your drive for the day.</p>
+                        
+                        <i class="ri-double-quotes-l text-primary" style="font-size: 4rem; opacity: 0.5;"></i>
+                        <h1 id="main-quote" class="quote-large">"Small steps every day."</h1>
+                        <p id="main-quote-author" class="text-muted" style="font-size: 1.2rem;">- Productivity Mantra</p>
+                        
+                        <div class="timer-controls" style="margin-top: 40px;">
+                            <button class="btn btn-primary" id="main-refresh-quote-btn"><i class="ri-refresh-line"></i> Generate New Quote</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Daily Goals View -->
+                <section id="view-goals" class="view-section hidden">
+                    <div class="app-header">
+                        <button class="back-btn" id="back-to-dash"><i class="ri-arrow-left-line"></i> Dashboard</button>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-title">
+                            <div class="icon-box"><i class="ri-focus-2-line"></i></div>
+                            <h2>Daily Goals</h2>
+                        </div>
+                        <p class="app-desc">Track your primary objectives and milestones for today.</p>
+                        
+                        <form id="add-goal-form" class="input-group">
+                            <input type="text" id="goal-input" class="task-input" placeholder="What needs to be done?" required>
+                            <button type="submit" id="goal-add-btn" class="btn btn-primary"><i class="ri-add-line"></i> Add</button>
+                        </form>
+                        
+                        <div class="progress-container goals-progress-bar">
+                            <div class="progress-bar"><div class="progress-fill" style="width: 40%"></div></div>
+                            <span id="progress-text" class="text-muted text-sm mt-2" style="display: block; font-weight: 500;">Overall Progress: 40% (2 of 5 Complete)</span>
+                        </div>
+
+                        <ul id="goal-list" class="task-list">
+                        </ul>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
